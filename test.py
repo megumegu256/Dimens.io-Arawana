@@ -4,6 +4,8 @@ from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QApplication
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
+import rotation  as r
+
 
 # PySide6にグラフを表示するためのクラス
 class GraphCanvas(FigureCanvasQTAgg):
