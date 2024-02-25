@@ -15,10 +15,16 @@ def nrm(n,i,j,x):
 
     return rot
 
+def lisumnew(n,vn,vm):
+    vr = []
+    for i in range(math.comb(n,2)):
+        vr.append((vn[i]+vm[i])%360)
+    return vr
+
 def lisum(n,vn,vm,vl):
     vr = []
     for i in range(math.comb(n,2)):
-        vr.append(vn[i]+vm[i]+vl[i])
+        vr.append((vn[i]+vm[i]+vl[i])%360)
     return vr
     
 
@@ -32,18 +38,3 @@ def rot(n,pos,vn):
             pos = rot @ pos
             t += 1
     return pos
-
-
-
-# #*n
-# n = 4
-
-# tmp = [1,1,1,1] #点(x,y,z,w)
-
-# # *comb(n,2)
-# vn = [0,0,0,30,0,0] #角度(t0,t1,t2,t3,t4,t5) theta
-
-# vm = [0,0,0,0,0,0] #角度(p0,p1,p2,p3,p4,p5) phi
-
-# print(rot(n,tmp,vn)) #座標表示
-# print(rot(n,tmp,lisum(vn,vm))) #点表示
