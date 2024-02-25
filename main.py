@@ -3,12 +3,18 @@ import math
 
 # (2<=n<=12)
 n = 3 
+
 # points n
-ps = [[0,0,1,2],[0,0],[1,1,1]]
+ps = []
 # thetas comb(n,2)
 ths = []
 # phis comb(n,2)
 phs = []
+# rotation variation comb(n,2)
+rv = []
+# psi comb(n,2)
+pss = []
+
 # lines 2
 ls = []
 
@@ -18,8 +24,9 @@ rp = []
 rg = []
 
 
+
 for i in range(len(ps)):
-    if len(ps[i]) != n:
+    while len(ps[i]) != n:
         dfc = n-len(ps[i])
         if dfc > 0:
             ps[i].append(0)
@@ -27,22 +34,39 @@ for i in range(len(ps)):
             ps[i].pop()
 
 
-if len(ths) != math.comb(n,2):
+while len(ths) != math.comb(n,2):
     dfc = n-len(ths)
     if dfc > 0:
         ths.append(0)
     elif dfc < 0:
         ths.pop()
 
-if len(phs) != math.comb(n,2):
-    dfc = n-len(ths)
+while len(phs) != math.comb(n,2):
+    dfc = n-len(phs)
     if dfc > 0:
         phs.append(0)
     elif dfc < 0:
         phs.pop()
 
+while len(rv) != math.comb(n,2):
+    dfc = n-len(rv)
+    if dfc > 0:
+        phs.append(0)
+    elif dfc < 0:
+        phs.pop()
+
+while len(pss) != math.comb(n,2):
+    dfc = n-len(pss)
+    if dfc > 0:
+        phs.append(0)
+    elif dfc < 0:
+        phs.pop()
+
+for m in range(math.comb(n,2)):
+    pss[m] += rv[m]
+
 for j in range(len(ls)):
-    if len(ls[j]) != 2:
+    while len(ls[j]) != 2:
         dfc = 2-len(ls[j])
         if dfc > 0:
             ls[j].append(0)
@@ -50,7 +74,23 @@ for j in range(len(ls)):
             ls[j].pop()
 
 
+while len(rp) != len(ps):
+    dfc = n-len(rp)
+    if dfc > 0:
+        rp.append(0)
+    elif dfc < 0:
+        rp.pop()
+
+while len(rg) != len(ps):
+    dfc = n-len(rg)
+    if dfc > 0:
+        rg.append(0)
+    elif dfc < 0:
+        rg.pop()
 
 
+for k in range(len(ps)):
+    rp[k] = r.rot(n,ps[k],ths)
 
-print(ps)
+for l in range(len(ps)):
+    rg[l] = r.rot(n,ps[l],r.lisum(n,ths,phs,pss))
