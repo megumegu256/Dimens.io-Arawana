@@ -179,7 +179,10 @@ class Form(QDialog):
         #     x_data[n] = rg[n][0]
         #     y_data[n] = rg[n][1]
 
+
         print(rp)
+        # QMessageBox.information(self, "Message", rp)
+
         # print(rg)
         # print(x_data)
         # print(y_data)
@@ -187,12 +190,7 @@ class Form(QDialog):
 
 
 if __name__ == '__main__':
-    # Qtアプリケーションの作成
     app = QApplication(sys.argv)
-
-    # フォームを作成して表示
     form = Form()
     form.show()
-
-    # 画面表示のためのループ
     sys.exit(app.exec())
