@@ -6,9 +6,6 @@ import sys
 import PySide6.QtWidgets as Qw
 import PySide6.QtCore as Qc
 
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
-from matplotlib.figure import Figure
-
 # レイアウト設定用変数
 sp_exp = Qw.QSizePolicy.Policy.Expanding
 
