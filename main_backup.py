@@ -1,6 +1,7 @@
 import rotation  as r
 import math
 
+
 # (2<=n<=12)
 n = 3 
 
