@@ -2,7 +2,7 @@ import math
 import numpy as np
 import pygame as pg
 
-#回転行列
+#回転
 def rot(point,rotation):
   
   rotation_x = math.radians(rotation[0]) 
