@@ -1,35 +1,74 @@
 import rotation  as r
-import math
+import display as d
 
+import math
 import sys
-from PySide6.QtWidgets import *
+import PySide6.QtWidgets as Qw
+import PySide6.QtCore as Qc
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
+# レイアウト設定用変数
+sp_exp = Qw.QSizePolicy.Policy.Expanding
 
-class Form(QDialog):
+class MainWindow(Qw.QMainWindow):
 
-    def __init__(self, parent=None):
-        super(Form, self).__init__(parent)
+    # コンストラクタ(初期化
+    def __init__(self):
 
-        self.setWindowTitle("Dimens.io-Arawana")
-        self.setFixedWidth(300)
-        self.setFixedHeight(300)
+        super().__init__() 
+        self.setWindowTitle('Dimens.io-Arowana') 
+        self.rp = []
 
-        self.edit = QLineEdit("")
-        self.button = QPushButton("出力")
+        rect = Qc.QRect()
+        rect.setSize(Qc.QSize(640,160))
+        rect.moveCenter(app.primaryScreen().availableGeometry().center())
+        self.setGeometry(rect) 
 
-        layout = QVBoxLayout()
+        # メインレイアウトの設定
+        central_widget = Qw.QWidget(self)
+        self.setCentralWidget(central_widget)
+        main_layout = Qw.QVBoxLayout(central_widget) # 垂直レイアウト
+
+        # ボタン配置の水平レイアウトを作成します。
+        button_layout = Qw.QHBoxLayout()
+        button_layout.setAlignment(Qc.Qt.AlignmentFlag.AlignLeft) # 左寄せ
+        main_layout.addLayout(button_layout) # メインレイアウトにボタンレイアウトを追加
+
+        #「実行」ボタンの生成と設定
+        self.btn_run = Qw.QPushButton('実行')
+        self.btn_run.setSizePolicy(sp_exp,sp_exp)
+        self.btn_run.setGeometry(320, 100, 320, 100)
+        button_layout.addWidget(self.btn_run)
+
+        self.btn_run.clicked.connect(self.btn_run_clicked) 
+
+        # テキストボックス
+        self.textbox = Qw.QTextEdit(self)
+        self.textbox.setPlaceholderText("次元数n＿座標(n個の要素数スペース区切り)＿軸周りの回転(comb(n,2)の要素数スペース区切り)")
+        self.textbox.setGeometry(0, 0, 640, 50)
+        self.textbox.toPlainText()
+
+        # ステータスバー
+        self.sb_status = Qw.QStatusBar()
+        self.setStatusBar(self.sb_status)
+        self.sb_status.setSizeGripEnabled(False)
+        self.sb_status.showMessage('')
+
+
+        self.edit = Qw.QLineEdit("")
+        self.button = Qw.QPushButton("出力")
+
+        layout = Qw.QVBoxLayout()
         layout.addWidget(self.edit)
         layout.addWidget(self.button)
 
         self.setLayout(layout)
 
-        self.button.clicked.connect(self.exp)
 
-    def exp(self):
-        A = [float(i) for i in self.edit.text().split()]
+    def btn_run_clicked(self):
+        A = [float(i) for i in self.textbox.toPlainText().split()]
         # (2<=n<=12)
         n = int(A[0])
 
@@ -74,7 +113,8 @@ class Form(QDialog):
 
 
         # rotation points position 回転後座標
-        rp = []
+        self.rp = []
+
 
         # # rotation points new 回転後座標(速度変化あり)
         # rn = []
@@ -121,12 +161,12 @@ class Form(QDialog):
         #             ls[j].pop()
 
 
-        while len(rp) != len(ps):
-            dfc = len(ps)-len(rp)
+        while len(self.rp) != len(ps):
+            dfc = len(ps)-len(self.rp)
             if dfc > 0:
-                rp.append(0)
+                self.rp.append(0)
             elif dfc < 0:
-                rp.pop()
+                self.rp.pop()
 
         # while len(rn) != len(ps):
         #     dfc = len(ps)-len(rn)
@@ -144,7 +184,7 @@ class Form(QDialog):
 
 
         for k in range(len(ps)):
-            rp[k] = r.rot(n,ps[k],ths)
+            self.rp[k] = r.rot(n,ps[k],ths)
 
         # for o in range(len(ps)):
         #     rn[o] = r.rot(n,ps[o],r.lisumnew(n,ths,phs))
@@ -180,17 +220,27 @@ class Form(QDialog):
         #     y_data[n] = rg[n][1]
 
 
-        print(rp)
-        # QMessageBox.information(self, "Message", rp)
+
+        
+
 
         # print(rg)
         # print(x_data)
         # print(y_data)
 
 
+        msg = ''
+        msg += (f"{self.rp[0][0],self.rp[0][1],self.rp[0][2]}")
+        self.sb_status.showMessage(msg)
+
+
+        d.main(self.rp)
+
+
+
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    form = Form()
-    form.show()
+    app = Qw.QApplication(sys.argv)
+    main_window = MainWindow()
+    main_window.show()
     sys.exit(app.exec())
